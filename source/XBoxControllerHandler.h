@@ -1,5 +1,5 @@
-#ifndef CONTROLLERMANAGER_H
-#define CONTROLLERMANAGER_H
+#ifndef XBOX_CONTROLLER_HANDLER_H
+#define XBOX_CONTROLLER_HANDLER_H
 
 #define MAXCONTROLLERS 4
 
@@ -7,7 +7,7 @@
 #include "Controller.h"
 #include "UartConfig.h"
 
-struct ControllerManagerConfig {
+struct XBoxControllerHandlerConfig {
   UartConfig uartConfig;
   HardwareSerial* processorSerial;
   HardwareSerial* receiverSerial;
@@ -15,10 +15,10 @@ struct ControllerManagerConfig {
   int controllerCount;
 };
 
-class ControllerManager {
+class XBoxControllerHandler {
   public:
-    ControllerManager(ControllerManagerConfig config);
-    ~ControllerManager();
+    XBoxControllerHandler(XBoxControllerHandlerConfig config);
+    ~XBoxControllerHandler();
     bool Setup();
     void Loop();
     void Reset();

@@ -1,6 +1,6 @@
-#include "ControllerManager.h"
+#include "XBoxControllerHandler.h"
 
-ControllerManager::ControllerManager(ControllerManagerConfig config) {
+XBoxControllerHandler::XBoxControllerHandler(XBoxControllerHandlerConfig config) {
   m_uartConfig = config.uartConfig;
   m_processorSerial = config.processorSerial;
   m_receiverSerial = config.receiverSerial;
@@ -14,11 +14,11 @@ ControllerManager::ControllerManager(ControllerManagerConfig config) {
   }
 }
 
-ControllerManager::~ControllerManager() {
+XBoxControllerHandler::~XBoxControllerHandler() {
   delete[] m_controllers;
 }
 
-bool ControllerManager::Setup() {
+bool XBoxControllerHandler::Setup() {
   m_receiverSerial->begin(m_uartConfig.baudRate, GetSerialConfig(m_uartConfig));
   pinMode(m_resetPin, OUTPUT);
   digitalWrite(m_resetPin, HIGH);
@@ -27,11 +27,11 @@ bool ControllerManager::Setup() {
   return true;
 }
 
-void ControllerManager::Loop() {
+void XBoxControllerHandler::Loop() {
   ProcessSerial();
 }
 
-void ControllerManager::Reset() {
+void XBoxControllerHandler::Reset() {
   m_processorSerial->println("Hardware Reset");
   digitalWrite(m_resetPin, LOW);
   delay(1000);
@@ -40,35 +40,35 @@ void ControllerManager::Reset() {
   m_processorSerial->println("Done");
 }
 
-void ControllerManager::SetBtnOnPress(void (*fxPtr)(int controllerIndex, ControllerButtons controllerButton)) {
+void XBoxControllerHandler::SetBtnOnPress(void (*fxPtr)(int controllerIndex, ControllerButtons controllerButton)) {
   for(int i = 0; i < m_controllerCount; i++)
   {
     m_controllers[i].SetBtnOnPress(fxPtr);
   }
 }
 
-void ControllerManager::SetBtnOnRelease(void (*fxPtr)(int controllerIndex, ControllerButtons controllerButton)) {
+void XBoxControllerHandler::SetBtnOnRelease(void (*fxPtr)(int controllerIndex, ControllerButtons controllerButton)) {
   for(int i = 0; i < m_controllerCount; i++)
   {
     m_controllers[i].SetBtnOnRelease(fxPtr);
   }
 }
 
-void ControllerManager::SetTrigOnChange(void (*fxPtr)(int controllerIndex, ControllerTriggers controllerTrigger, int newVal)) {
+void XBoxControllerHandler::SetTrigOnChange(void (*fxPtr)(int controllerIndex, ControllerTriggers controllerTrigger, int newVal)) {
   for(int i = 0; i < m_controllerCount; i++)
   {
     m_controllers[i].SetTrigOnChange(fxPtr);
   }
 }
 
-void ControllerManager::SetStickOnChange(void (*fxPtr)(int controllerIndex, ControllerSticks controllerStick, int xVal, int yVal)) {
+void XBoxControllerHandler::SetStickOnChange(void (*fxPtr)(int controllerIndex, ControllerSticks controllerStick, int xVal, int yVal)) {
   for(int i = 0; i < m_controllerCount; i++)
   {
     m_controllers[i].SetStickOnChange(fxPtr);
   }
 }
 
-void ControllerManager::SetTrigTolerance(int controllerIndex, ControllerTriggers trigger, int tolerance) {
+void XBoxControllerHandler::SetTrigTolerance(int controllerIndex, ControllerTriggers trigger, int tolerance) {
   switch(trigger)
   {
     case LEFT_TRIG:
@@ -83,7 +83,7 @@ void ControllerManager::SetTrigTolerance(int controllerIndex, ControllerTriggers
   }
 }
 
-void ControllerManager::SetStickToleranceX(int controllerIndex, ControllerSticks stick, int tolerance) {
+void XBoxControllerHandler::SetStickToleranceX(int controllerIndex, ControllerSticks stick, int tolerance) {
   switch(stick)
   {
     case LEFT_STICK:
@@ -98,7 +98,7 @@ void ControllerManager::SetStickToleranceX(int controllerIndex, ControllerSticks
   }
 }
 
-void ControllerManager::SetStickToleranceY(int controllerIndex, ControllerSticks stick, int tolerance) {
+void XBoxControllerHandler::SetStickToleranceY(int controllerIndex, ControllerSticks stick, int tolerance) {
   switch(stick)
   {
     case LEFT_STICK:
@@ -113,7 +113,7 @@ void ControllerManager::SetStickToleranceY(int controllerIndex, ControllerSticks
   }
 }
 
-void ControllerManager::ProcessSerial() {
+void XBoxControllerHandler::ProcessSerial() {
   if(m_receiverSerial->available()) {
     String data = m_receiverSerial->readStringUntil('\n');
     if(data.length() > 2) {
@@ -146,7 +146,7 @@ void ControllerManager::ProcessSerial() {
   }
 }
 
-void ControllerManager::ParseData(String data) {
+void XBoxControllerHandler::ParseData(String data) {
   int startPos = 0;
   int messageIndex = 0;
   int controllerIndex = 0;
@@ -174,7 +174,7 @@ void ControllerManager::ParseData(String data) {
   //m_processorSerial->println();
 }
 
-void ControllerManager::ProcessData(String data, int controllerIndex, int messageIndex) {\
+void XBoxControllerHandler::ProcessData(String data, int controllerIndex, int messageIndex) {\
   int messageVal = data.toInt();
   if(data != "0" && messageVal == 0)
   {
@@ -263,7 +263,7 @@ void ControllerManager::ProcessData(String data, int controllerIndex, int messag
   }
 }
 
-int ControllerManager::GetSerialConfig(UartConfig uartConfig) {
+int XBoxControllerHandler::GetSerialConfig(UartConfig uartConfig) {
   int serialConfig = -1;
   switch(uartConfig.dataBits) {
     case DATA_5:
