@@ -159,17 +159,23 @@ void XBoxControllerHandler::ParseData(String data) {
         if(messageIndex == 1)
         {
           controllerIndex = substring.toInt();
-        }else
+        }else if(controllerIndex >= 0 && controllerIndex < m_controllerCount)
         {
           ProcessData(substring, controllerIndex, messageIndex);
+        }else
+        {
+          return;
         }
       }
       messageIndex++;
       startPos = i + 1;
     }
   }
-  substring = data.substring(startPos, data.length());
-  ProcessData(substring, controllerIndex, messageIndex);
+  if (controllerIndex >= 0 && controllerIndex < m_controllerCount)
+  {
+      substring = data.substring(startPos, data.length());
+      ProcessData(substring, controllerIndex, messageIndex);
+  }
   //m_processorSerial->println();
   //m_processorSerial->println();
 }
