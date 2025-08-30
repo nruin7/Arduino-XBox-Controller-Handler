@@ -1,1 +1,9 @@
 * text=auto
+
+# Exclude development-only content from release archives
+dev/        export-ignore
+.vscode/    export-ignore
+.github/    export-ignore
+tests/      export-ignore
+*.ps1       export-ignore
+build/      export-ignore
