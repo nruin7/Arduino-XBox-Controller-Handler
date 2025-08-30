@@ -66,8 +66,8 @@ void loop() {
 | TX (pin 12)        | RXD2 (pin 12)         | UART link carrying controller frames |
 | GND                | GND                   | Common ground                        |
 
-If needed, use some form of logic level shifting - voltage divider or discrete IC (TI TXS0108ERGYR)
-Match the **baud** and UART in `ControllerManagerConfig` to your wiring.
+- If needed, use some form of logic level shifting - voltage divider or discrete IC (TI TXS0108ERGYR).
+- Match the **baud** and UART in `ControllerManagerConfig` to your wiring.
 
 ---
 
@@ -139,7 +139,7 @@ See headers and examples for the complete set.
 ---
 
 ## ESP32 sender (Bluepad32)
-The sender reads the Xbox controller via Bluepad32 and emits the frame above on a UART. Include and use:
+The sender reads the Xbox controller via Bluepad32 and emits the frame above on a UART channel. Include and use:
 ```cpp
 #include <Bluepad32.h>
 ```
@@ -149,14 +149,17 @@ Install the **ESP32 + Bluepad32** board package and select the appropriate FQBN 
 
 ## Development (CLI)
 This repo includes PowerShell scripts under **`dev/`** to enable fast, IDE‑free iteration that always builds against the **local library source**:
-- `setup.ps1` — installs board indexes/cores with fallbacks
-- `list-ports.ps1` — list available COM ports
+- `Setup.ps1` — installs board indexes/cores with fallbacks
+- `ListPorts.ps1` — list available COM ports
 - `UploadRecv.ps1` / `UploadSnd.ps1` — **compile → upload → auto‑open serial monitor**
 
 Example:
 ```powershell
 # One‑time
-.\dev\setup.ps1
+.\dev\Setup.ps1
+
+# As needed to determine the correct COM port
+.\dev\ListPorts.ps1
 
 # Receiver (ATmega2560) on COM3
 .\dev\UploadRecv.ps1 -Port COM3
