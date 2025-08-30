@@ -1,0 +1,24 @@
+# Build artifacts
+build/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Logs & temps
+*.log
+*.tmp
+
+# IDE/editor
+.vscode/
+.idea/
+
+# Arduino/ESP-IDF odds & ends (safe)
+CMakeCache.txt
+CMakeFiles/
+cmake-build-*/
+*.elf
+*.map
+
+# (Optional) If you vendor Bluepad32 locally, ignore its build stuff only:
+# external/bluepad32/build/
